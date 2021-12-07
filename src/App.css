@@ -1,0 +1,9 @@
+.container {
+    max-width: 1920px;
+    padding: 0;
+}
+
+.auth-form {
+    max-width: 400px;
+    margin: 80px auto;
+}

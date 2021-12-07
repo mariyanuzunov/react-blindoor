@@ -1,0 +1,17 @@
+.DraftEditor-root {
+    height: 350px;
+    overflow-y: auto;
+}
+.DraftEditor-editorContainer,
+.public-DraftEditor-content {
+    height: 100%;
+}
+
+.select-header {
+    width: 70px;
+    display: inline-block;
+}
+
+.text-editor-container {
+    border: 1px solid green;
+}

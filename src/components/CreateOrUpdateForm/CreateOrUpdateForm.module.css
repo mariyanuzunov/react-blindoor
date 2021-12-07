@@ -1,0 +1,12 @@
+.form {
+    max-width: 550px;
+    /* margin-top: 20px; */
+}
+
+.label {
+    margin-top: 10px;
+}
+
+.submit-btn {
+    margin-top: 10px;
+}
