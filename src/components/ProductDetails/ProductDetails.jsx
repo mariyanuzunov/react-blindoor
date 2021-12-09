@@ -2,18 +2,18 @@ import { useContext, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import CartContext from '../../context/CartContext';
-import { deleteDoor, getDoorById } from '../../firebase';
+import { deleteDoor, getDoorById, useAuth } from '../../firebase';
 import styles from './ProductDetails.module.css';
 
 // TODO: refactor add to cart
 
 export default function ProductDetails() {
+    const user = useAuth();
     const [product, setProduct] = useState({});
     const { id } = useParams();
     const navigate = useNavigate();
     const { addProductToCart } = useContext(CartContext);
 
-    // const [quantity, setQuantity] = useState(1);
     const [isAddedToCart, setIsAddedToCart] = useState(false);
 
     useEffect(() => {
@@ -30,9 +30,10 @@ export default function ProductDetails() {
     }
 
     function handleAddToCart() {
-        // console.log(quantity);
-        // addProductToCart({ ...product, quantity });
-        console.log(product.id);
+        if (!user) {
+            navigate('/login');
+        }
+
         addProductToCart({
             id: product.id,
             title: product.title,
@@ -64,57 +65,55 @@ export default function ProductDetails() {
                     </p>
                 </div>
                 <div className={styles['product-controls']}>
-                    {/* <Button onClick={() => setQuantity(q => q + 1)}>+</Button>
-                    <input
-                        type='text'
-                        style={{ width: '35px' }}
-                        value={quantity}
-                        onChange={e => setQuantity(Number(e.target.value))}
-                    />
-                    <Button onClick={() => setQuantity(q => q - 1)}>-</Button> */}
-                    {isAddedToCart ? (
-                        <Button
-                            variant='outline-danger'
-                            size='lg'
-                            onClick={handleRemoveFromCart}
-                        >
-                            Премахни от количката
-                        </Button>
-                    ) : (
-                        <Button
-                            variant='outline-primary'
-                            size='lg'
-                            onClick={handleAddToCart}
-                        >
-                            Добави в количката
-                        </Button>
-                    )}
+                    {user && !user.isAdmin ? (
+                        <UserControls
+                            isInCart={isAddedToCart}
+                            addToCart={handleAddToCart}
+                            removeFromCart={handleRemoveFromCart}
+                        />
+                    ) : null}
 
-                    {/* <Button
-                        variant='outline-primary'
-                        size='lg'
-                        onClick={handleAddToCart}
-                    >
-                        Добави в количката
-                    </Button> */}
-                    <ButtonGroup>
-                        <Button
-                            variant='outline-secondary'
-                            size='sm'
-                            onClick={handleUpdate}
-                        >
-                            Редактирай
-                        </Button>
-                        <Button
-                            variant='outline-danger'
-                            size='sm'
-                            onClick={handleDelete}
-                        >
-                            Изтрий
-                        </Button>
-                    </ButtonGroup>
+                    {user && user.isAdmin ? (
+                        <AdminControls
+                            handleDelete={handleDelete}
+                            handleUpdate={handleUpdate}
+                        />
+                    ) : null}
                 </div>
             </div>
         </div>
+    );
+}
+
+function UserControls({ isInCart, addToCart, removeFromCart }) {
+    if (isInCart) {
+        return (
+            <Button variant='outline-danger' size='lg' onClick={removeFromCart}>
+                Премахни от количката
+            </Button>
+        );
+    } else {
+        return (
+            <Button variant='outline-primary' size='lg' onClick={addToCart}>
+                Добави в количката
+            </Button>
+        );
+    }
+}
+
+function AdminControls({ handleUpdate, handleDelete }) {
+    return (
+        <ButtonGroup>
+            <Button
+                variant='outline-secondary'
+                size='sm'
+                onClick={handleUpdate}
+            >
+                Редактирай
+            </Button>
+            <Button variant='outline-danger' size='sm' onClick={handleDelete}>
+                Изтрий
+            </Button>
+        </ButtonGroup>
     );
 }

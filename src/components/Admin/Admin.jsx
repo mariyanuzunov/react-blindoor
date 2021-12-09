@@ -1,3 +1,10 @@
+import { Nav } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
 export default function Admin() {
-    return <h1>admin panel page</h1>;
+    return (
+        <Nav.Link as={Link} to='/admin/products/create'>
+            Добавяне на нов продукт
+        </Nav.Link>
+    );
 }

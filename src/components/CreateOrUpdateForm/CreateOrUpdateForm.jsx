@@ -40,7 +40,6 @@ export default function CreateOrUpdateForm() {
         } else {
             updateDoor(id, item)
                 .then(res => {
-                    console.log(res);
                     navigate(`/catalog/${id}`);
                 })
                 .then(error => {

@@ -1,11 +1,20 @@
 import { useContext } from 'react';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
-import CartContext from '../../context/CartContext';
+import { NavLink, useNavigate } from 'react-router-dom';
+
 import { logout } from '../../firebase';
 
-export default function HeaderNav({ email }) {
+import CartContext from '../../context/CartContext';
+
+export default function HeaderNav({ user }) {
     const { products: cartItems } = useContext(CartContext);
+
+    const navigate = useNavigate();
+
+    function handleLogout() {
+        logout().then(() => navigate('/'));
+    }
+
     return (
         <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
             <Container>
@@ -22,16 +31,22 @@ export default function HeaderNav({ email }) {
                         <Nav.Link as={NavLink} to='/contacts'>
                             Контакти
                         </Nav.Link>
-                        <Nav.Link as={NavLink} to='/admin/products/create'>
-                            add product
-                        </Nav.Link>
-                        <Nav.Link as={NavLink} to='/cart'>
-                            cart ({cartItems.length})
-                        </Nav.Link>
                     </Nav>
                     <Nav>
-                        {email ? (
-                            <UserControls email={email} />
+                        {user ? (
+                            <>
+                                {!user.isAdmin ? (
+                                    <Nav.Link as={NavLink} to='/cart'>
+                                        Количка ( {cartItems.length} )
+                                    </Nav.Link>
+                                ) : null}
+
+                                <UserControls
+                                    user={user}
+                                    products={cartItems}
+                                    handleLogout={handleLogout}
+                                />
+                            </>
                         ) : (
                             <GuestControls />
                         )}
@@ -42,16 +57,21 @@ export default function HeaderNav({ email }) {
     );
 }
 
-function UserControls({ email }) {
+function UserControls({ user, handleLogout }) {
     return (
-        <NavDropdown title={email} id='collasible-nav-dropdown'>
-            <NavDropdown.Item href='#action/3.1'>Профил</NavDropdown.Item>
-            <NavDropdown.Item as={NavLink} to='/admin'>
-                Админ панел
-            </NavDropdown.Item>
+        <NavDropdown title={user.email} id='collasible-nav-dropdown'>
+            {user.isAdmin ? (
+                <NavDropdown.Item as={NavLink} to='/admin'>
+                    Админ панел
+                </NavDropdown.Item>
+            ) : (
+                <NavDropdown.Item as={NavLink} to={`/user/${user.uid}`}>
+                    Моят профил
+                </NavDropdown.Item>
+            )}
 
             <NavDropdown.Divider />
-            <NavDropdown.Item onClick={logout}>Изход</NavDropdown.Item>
+            <NavDropdown.Item onClick={handleLogout}>Изход</NavDropdown.Item>
         </NavDropdown>
     );
 }

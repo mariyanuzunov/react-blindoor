@@ -1,11 +1,10 @@
+import FilterProducts from '../FilterProducts';
 import styles from './CatalogSidebar.module.css';
 
-export default function CatalogSidebar() {
+export default function CatalogSidebar({ filterItems }) {
     return (
         <div className={styles.sidebar}>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-            voluptatum veniam ad nemo necessitatibus dolorum, vitae quis quas
-            expedita rem.
+            <FilterProducts filterItems={filterItems} />
         </div>
     );
 }

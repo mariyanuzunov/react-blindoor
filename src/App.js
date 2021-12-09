@@ -1,24 +1,31 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useAuth } from './firebase';
+
+import { CartProvider } from './context/CartContext';
+
 import Catalog from './components/Catalog';
 import Contacts from './components/Contacts';
 import HeaderNav from './components/HeaderNav';
 import Home from './components/Home';
 import Login from './components/Login/Login';
 import Register from './components/Register';
-import './App.css';
 import CreateOrUpdateForm from './components/CreateOrUpdateForm';
-import Admin from './components/Admin/Admin';
 import ProductDetails from './components/ProductDetails';
 import Cart from './components/Cart/Cart';
-import { CartProvider } from './context/CartContext';
+import RequireAuth from './components/RequireAuth/RequireAuth';
+import RequireGuest from './components/RequireGuest';
+// make lazy
+import Admin from './components/Admin/Admin';
+
+import './App.css';
 
 export default function App() {
-    const currentUser = useAuth();
+    const user = useAuth();
+
     return (
         <BrowserRouter>
             <CartProvider>
-                <HeaderNav email={currentUser?.email} />
+                <HeaderNav user={user} />
                 <div className='container'>
                     <Routes>
                         <Route path='/' element={<Home />}></Route>
@@ -27,18 +34,54 @@ export default function App() {
                             path='/catalog/:id'
                             element={<ProductDetails />}
                         ></Route>
-                        <Route path='cart' element={<Cart />}></Route>
+                        <Route
+                            path='cart'
+                            element={
+                                <RequireAuth user={user}>
+                                    <Cart />
+                                </RequireAuth>
+                            }
+                        ></Route>
                         <Route path='/contacts' element={<Contacts />}></Route>
-                        <Route path='/login' element={<Login />}></Route>
-                        <Route path='/register' element={<Register />}></Route>
-                        <Route path='/admin' element={<Admin />}></Route>
+                        <Route
+                            path='/login'
+                            element={
+                                <RequireGuest>
+                                    <Login />
+                                </RequireGuest>
+                            }
+                        ></Route>
+                        <Route
+                            path='/register'
+                            element={
+                                <RequireGuest>
+                                    <Register />
+                                </RequireGuest>
+                            }
+                        ></Route>
+                        <Route
+                            path='/admin'
+                            element={
+                                <RequireAuth user={user} requireAdmin={true}>
+                                    <Admin />
+                                </RequireAuth>
+                            }
+                        ></Route>
                         <Route
                             path='/admin/products/create'
-                            element={<CreateOrUpdateForm />}
+                            element={
+                                <RequireAuth user={user} requireAdmin={true}>
+                                    <CreateOrUpdateForm />
+                                </RequireAuth>
+                            }
                         ></Route>
                         <Route
                             path='/admin/products/update/:id'
-                            element={<CreateOrUpdateForm />}
+                            element={
+                                <RequireAuth user={user} requireAdmin={true}>
+                                    <CreateOrUpdateForm />
+                                </RequireAuth>
+                            }
                         ></Route>
                     </Routes>
                 </div>

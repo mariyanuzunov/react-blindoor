@@ -2,8 +2,8 @@ import * as yup from 'yup';
 
 // TODO: Dynamic categories and manufacturers
 
-const categories = ['Интериорни врати', 'Входни врати'];
-const manufacturers = [
+export const categories = ['Интериорни врати', 'Входни врати'];
+export const manufacturers = [
     'Variodor',
     'Eurostill',
     'New Style Doors',

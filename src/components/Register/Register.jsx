@@ -1,33 +1,68 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { register } from '../../firebase';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Register.module.css';
 
+const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
 export default function Register() {
+    const navigate = useNavigate();
+
     const emailRef = useRef();
     const passwordRef = useRef();
     const repeatPasswordRef = useRef();
 
+    const [errors, setErrors] = useState([]);
+
     function handleRegister(e) {
         e.preventDefault();
-        // TODO: Validation
-        register(emailRef.current.value, passwordRef.current.value)
-            .then(res => console.log(res.user))
-            .catch(console.log);
+
+        setErrors([]);
+        let valid = true;
+
+        const email = emailRef.current.value;
+        const pass = passwordRef.current.value;
+        const rePass = repeatPasswordRef.current.value;
+
+        if (!emailRegex.test(email)) {
+            setErrors(state => [...state, 'Невалиден e-mail адрес!']);
+            valid = false;
+        }
+        if (pass.length < 6) {
+            setErrors(state => [
+                ...state,
+                'Паролата трябва да се състои от поне 6 символа!',
+            ]);
+            valid = false;
+        }
+        if (pass !== rePass) {
+            setErrors(state => [...state, 'Паролите не съвпадат!']);
+            valid = false;
+        }
+
+        if (valid) {
+            register(emailRef.current.value, passwordRef.current.value)
+                .then(() => navigate('/'))
+                .catch(console.log);
+        }
     }
 
     return (
         <Form className='auth-form' onSubmit={handleRegister}>
-            <Form.Group className='mb-3' controlId='formBasicEmail'>
+            {errors &&
+                errors.map(x => (
+                    <p key={x} className={styles.error}>
+                        {x}
+                    </p>
+                ))}
+            <Form.Group>
                 <Form.Label>Имейл адрес</Form.Label>
                 <Form.Control type='email' placeholder='Email' ref={emailRef} />
-                {/* <Form.Text className='text-muted'>
-                    We'll never share your email with anyone else.
-                </Form.Text> */}
             </Form.Group>
 
-            <Form.Group className='mb-3' controlId='formBasicPassword'>
+            <Form.Group>
                 <Form.Label>Парола</Form.Label>
                 <Form.Control
                     type='password'
@@ -35,7 +70,7 @@ export default function Register() {
                     ref={passwordRef}
                 />
             </Form.Group>
-            <Form.Group className='mb-3' controlId='formBasicPassword'>
+            <Form.Group>
                 <Form.Label>Повтаряне на паролата</Form.Label>
                 <Form.Control
                     type='password'

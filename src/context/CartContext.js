@@ -1,4 +1,3 @@
-import { ProductionQuantityLimitsOutlined } from '@mui/icons-material';
 import { createContext, useState } from 'react';
 
 const CartContext = createContext({
@@ -12,23 +11,6 @@ export function CartProvider({ children }) {
     const [products, setProducts] = useState([]);
 
     function addProductToCart(product) {
-        // console.log(product.quantity);
-
-        // setProducts(state => {
-        //     const existingProduct = state.find(x => x.id === product.id);
-
-        //     if (!existingProduct) {
-        //         return [...state, product];
-        //     }
-
-        //     return state.map(x => {
-        //         if (x.id === product.id) {
-        //             x.quantity += product.quantity;
-        //         }
-
-        //         return x;
-        //     });
-        // });
         product.quantity = 1;
         setProducts(state => [...state, product]);
     }
@@ -38,7 +20,6 @@ export function CartProvider({ children }) {
     }
 
     function updateProductQuantity(productId, quantity) {
-        console.log('here');
         setProducts(state =>
             state.map(x => {
                 if (x.id === productId) {

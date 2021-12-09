@@ -1,35 +1,65 @@
 import { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { getAllDoors, getAllOrders } from '../../firebase';
+import { getAllDoors } from '../../firebase';
 import CatalogSidebar from '../CatalogSidebar/CatalogSidebar';
 import ProductItemList from '../ProductItemList';
 
+// TODO: refactor
 export default function Catalog() {
-    const [doorItems, setDoorItems] = useState([]);
-    const [orders, setOrders] = useState([]);
+    const [allDoors, setAllDoors] = useState([]);
+    const [filteredDoors, setFilteredDoors] = useState([]);
 
     useEffect(() => {
         getAllDoors().then(doors => {
-            console.log(doors);
-            setDoorItems(doors);
-        });
-        getAllOrders().then(orders => {
-            console.log(orders);
-            setOrders(orders);
+            setAllDoors(doors);
         });
     }, []);
 
+    function filterItems(criteria) {
+        let doors = allDoors.slice();
+
+        if (criteria?.category) {
+            doors = doors.filter(x => x.category === criteria?.category);
+        }
+
+        if (criteria?.manufacturer) {
+            doors = doors.filter(
+                x => x.manufacturer === criteria?.manufacturer
+            );
+        }
+
+        if (criteria?.minPrice) {
+            doors = doors.filter(
+                x => Number(x.price) >= Number(criteria.minPrice)
+            );
+        }
+        if (criteria?.maxPrice) {
+            doors = doors.filter(
+                x => Number(x.price) <= Number(criteria.maxPrice)
+            );
+        }
+
+        if (criteria?.keyword) {
+            doors = doors.filter(x =>
+                x.title.toLowerCase().includes(criteria.keyword.toLowerCase())
+            );
+        }
+
+        setFilteredDoors(doors);
+    }
+
     return (
         <>
-            {orders.map(x => (
-                <pre key={x.id}>{JSON.stringify(x, null, 4)}</pre>
-            ))}
-            <Row xs={1} sm={2}>
+            <Row sm={1}>
                 <Col md={4}>
-                    <CatalogSidebar />
+                    <CatalogSidebar filterItems={filterItems} />
                 </Col>
                 <Col md={8}>
-                    <ProductItemList items={doorItems} />
+                    <ProductItemList
+                        items={
+                            filteredDoors.length > 0 ? filteredDoors : allDoors
+                        }
+                    />
                 </Col>
             </Row>
         </>

@@ -3,3 +3,12 @@
     justify-content: space-between;
     align-items: baseline;
 }
+
+.error {
+    background-color: rgb(236, 108, 108);
+    color: #fff;
+    padding: 5px;
+    margin-bottom: 5px;
+    text-align: center;
+    border-radius: 5px;
+}

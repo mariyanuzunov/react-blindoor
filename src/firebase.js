@@ -15,6 +15,9 @@ import {
     doc,
     updateDoc,
     deleteDoc,
+    query,
+    orderBy,
+    limit,
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
@@ -51,6 +54,13 @@ export async function getDoorById(id) {
     } else {
         throw new Error(`Item with id ${id} not found!`);
     }
+}
+
+export async function getLatestDoors(count) {
+    const q = query(doorsCollectionRef, orderBy('title', 'asc'), limit(count));
+    const snapshot = await getDocs(q);
+    const doors = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+    return doors;
 }
 
 export function createDoor(data) {
@@ -97,9 +107,12 @@ export function useAuth() {
     const [currentUser, setCurrentUser] = useState();
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, user =>
-            setCurrentUser(user)
-        );
+        const unsubscribe = onAuthStateChanged(auth, user => {
+            if (user?.email === 'admin@test.com') {
+                user.isAdmin = true;
+            }
+            setCurrentUser(user);
+        });
         return unsubscribe;
     }, []);
 

@@ -1,38 +1,50 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { login } from '../../firebase';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
 
 export default function Login() {
+    const navigate = useNavigate();
+
     const emailRef = useRef();
     const passwordRef = useRef();
+    const [error, setError] = useState('');
 
     function handleLogin(e) {
         e.preventDefault();
         login(emailRef.current.value, passwordRef.current.value)
-            .then(res => console.log(res.user))
-            .catch(console.log);
+            .then(() => navigate('/'))
+            .catch(error => {
+                if (
+                    error.code === 'auth/invalid-email' ||
+                    error.code === 'auth/wrong-password' ||
+                    error.code === 'auth/user-not-found'
+                ) {
+                    setError('Грешен e-mail адрес или парола!');
+                } else {
+                    setError(error.code);
+                }
+            });
     }
 
     return (
         <Form className='auth-form' onSubmit={handleLogin}>
-            <Form.Group className='mb-3' controlId='formBasicEmail'>
+            <Form.Group>
                 <Form.Label>Имейл адрес</Form.Label>
                 <Form.Control type='email' placeholder='Email' ref={emailRef} />
-                {/* <Form.Text className='text-muted'>
-                        We'll never share your email with anyone else.
-                    </Form.Text> */}
             </Form.Group>
 
-            <Form.Group className='mb-3' controlId='formBasicPassword'>
+            <Form.Group>
                 <Form.Label>Парола</Form.Label>
                 <Form.Control
                     type='password'
                     placeholder='Password'
                     ref={passwordRef}
                 />
+                {error && <p className={styles.error}>{error}</p>}
             </Form.Group>
+
             <div className={styles['form-controls']}>
                 <Button variant='primary' type='submit'>
                     Вход

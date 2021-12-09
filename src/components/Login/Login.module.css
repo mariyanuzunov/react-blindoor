@@ -2,4 +2,13 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+    margin-top: 5px;
+}
+
+.error {
+    background-color: rgb(236, 108, 108);
+    color: #fff;
+    padding: 8px;
+    margin: 10px 0px;
+    text-align: center;
 }

@@ -1,11 +1,14 @@
 import { Col, Form, Row, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import styles from './CartForm.module.css';
 
 export default function CartForm({ submitOrder }) {
+    const navigate = useNavigate();
+
     function handleSubmit(e) {
         e.preventDefault();
         const data = Object.fromEntries(new FormData(e.target));
-        submitOrder(data);
+        submitOrder(data).then(() => navigate('/'));
     }
 
     return (

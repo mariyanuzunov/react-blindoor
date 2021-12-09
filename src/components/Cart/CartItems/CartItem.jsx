@@ -7,7 +7,6 @@ import styles from './CartItem.module.css';
 export default function CartItem({ product }) {
     const { updateProductQuantity } = useContext(CartContext);
     const [quantity, setQuantity] = useState(product.quantity);
-    console.log('[render] CartItem.jsx');
 
     function handleQuantityChange(productId) {
         updateProductQuantity(productId, quantity);
