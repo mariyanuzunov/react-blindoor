@@ -65,8 +65,8 @@ function UserControls({ user, handleLogout }) {
                     Админ панел
                 </NavDropdown.Item>
             ) : (
-                <NavDropdown.Item as={NavLink} to={`/user/${user.uid}`}>
-                    Моят профил
+                <NavDropdown.Item as={NavLink} to='/user/my-orders'>
+                    Моите поръчки
                 </NavDropdown.Item>
             )}
 

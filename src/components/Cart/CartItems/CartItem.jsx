@@ -5,7 +5,8 @@ import CartContext from '../../../context/CartContext';
 import styles from './CartItem.module.css';
 
 export default function CartItem({ product }) {
-    const { updateProductQuantity } = useContext(CartContext);
+    const { updateProductQuantity, removeProductFromCart } =
+        useContext(CartContext);
     const [quantity, setQuantity] = useState(product.quantity);
 
     function handleQuantityChange(productId) {
@@ -13,7 +14,11 @@ export default function CartItem({ product }) {
     }
     return (
         <div key={product.id} className={styles['card']}>
-            <Button variant='outline-danger' className={styles['btn-delete']}>
+            <Button
+                variant='outline-danger'
+                className={styles['btn-delete']}
+                onClick={() => removeProductFromCart(product.id)}
+            >
                 X
             </Button>
             <div className={styles['image-container']}>

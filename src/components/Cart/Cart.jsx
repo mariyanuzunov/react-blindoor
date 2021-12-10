@@ -6,7 +6,7 @@ import CartForm from './CartForm';
 import { createOrder, useAuth } from '../../firebase';
 
 export default function Cart() {
-    const { products } = useContext(CartContext);
+    const { products, resetCart } = useContext(CartContext);
     const user = useAuth();
 
     function submitOrder(shippingDetails) {
@@ -15,7 +15,7 @@ export default function Cart() {
             products,
             shippingDetails,
         };
-
+        resetCart();
         return createOrder(order);
     }
 

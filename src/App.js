@@ -18,6 +18,8 @@ import RequireGuest from './components/RequireGuest';
 import Admin from './components/Admin/Admin';
 
 import './App.css';
+import UserOrders from './components/UserOrders/UserOrders';
+import AllOrders from './components/AllOrders/AllOrders';
 
 export default function App() {
     const user = useAuth();
@@ -80,6 +82,22 @@ export default function App() {
                             element={
                                 <RequireAuth user={user} requireAdmin={true}>
                                     <CreateOrUpdateForm />
+                                </RequireAuth>
+                            }
+                        ></Route>
+                        <Route
+                            path='/admin/orders'
+                            element={
+                                <RequireAuth user={user} requireAdmin={true}>
+                                    <AllOrders />
+                                </RequireAuth>
+                            }
+                        ></Route>
+                        <Route
+                            path='/user/my-orders'
+                            element={
+                                <RequireAuth user={user}>
+                                    <UserOrders userId={user?.uid} />
                                 </RequireAuth>
                             }
                         ></Route>

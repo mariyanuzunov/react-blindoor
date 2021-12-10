@@ -18,6 +18,7 @@ import {
     query,
     orderBy,
     limit,
+    where,
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
@@ -88,6 +89,17 @@ export async function getAllOrders() {
 
 export function createOrder(data) {
     return addDoc(ordersCollectionRef, data);
+}
+
+export async function getUserOrders(userId) {
+    const q = query(ordersCollectionRef, where('customerId', '==', userId));
+    const snapshot = await getDocs(q);
+    const userOrders = snapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id,
+    }));
+    console.log(userOrders);
+    return userOrders;
 }
 
 // Firebase Authentication
