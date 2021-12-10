@@ -102,6 +102,30 @@ export async function getUserOrders(userId) {
     return userOrders;
 }
 
+// Reviews Collection
+const reviewsCollectionRef = collection(db, 'reviews');
+
+export function createReview(data) {
+    return addDoc(reviewsCollectionRef, data);
+}
+
+export async function removeReview(id) {
+    console.log(id);
+    const docRef = doc(db, 'reviews', id);
+    return deleteDoc(docRef);
+}
+
+export async function getProductReviews(productId) {
+    const q = query(reviewsCollectionRef, where('productId', '==', productId));
+    const snapshot = await getDocs(q);
+    const productReviews = snapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id,
+    }));
+    console.log(productReviews);
+    return productReviews;
+}
+
 // Firebase Authentication
 export function register(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);

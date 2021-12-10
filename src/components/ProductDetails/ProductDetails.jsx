@@ -3,6 +3,7 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import CartContext from '../../context/CartContext';
 import { deleteDoor, getDoorById, useAuth } from '../../firebase';
+import ProductReviews from '../ProductReviews/ProductReviews';
 import styles from './ProductDetails.module.css';
 
 // TODO: refactor add to cart
@@ -46,42 +47,47 @@ export default function ProductDetails() {
     function handleRemoveFromCart() {}
 
     return (
-        <div className={styles['product-container']}>
-            <div className={styles['product-img-container']}>
-                <img
-                    className={styles['product-img']}
-                    src={product.imageUrl}
-                    alt='door img'
-                />
-            </div>
-            <div className={styles['product-details-container']}>
-                <div className={styles['product-details']}>
-                    <h1 className={styles['product-title']}>{product.title}</h1>
-                    <p className={styles['product-price']}>
-                        {product.price} лв.
-                    </p>
-                    <p className={styles['product-de']}>
-                        {product.description}
-                    </p>
+        <>
+            <div className={styles['product-container']}>
+                <div className={styles['product-img-container']}>
+                    <img
+                        className={styles['product-img']}
+                        src={product.imageUrl}
+                        alt='door img'
+                    />
                 </div>
-                <div className={styles['product-controls']}>
-                    {user && !user.isAdmin ? (
-                        <UserControls
-                            isInCart={isAddedToCart}
-                            addToCart={handleAddToCart}
-                            removeFromCart={handleRemoveFromCart}
-                        />
-                    ) : null}
+                <div className={styles['product-details-container']}>
+                    <div className={styles['product-details']}>
+                        <h1 className={styles['product-title']}>
+                            {product.title}
+                        </h1>
+                        <p className={styles['product-price']}>
+                            {product.price} лв.
+                        </p>
+                        <p className={styles['product-de']}>
+                            {product.description}
+                        </p>
+                    </div>
+                    <div className={styles['product-controls']}>
+                        {user && !user.isAdmin ? (
+                            <UserControls
+                                isInCart={isAddedToCart}
+                                addToCart={handleAddToCart}
+                                removeFromCart={handleRemoveFromCart}
+                            />
+                        ) : null}
 
-                    {user && user.isAdmin ? (
-                        <AdminControls
-                            handleDelete={handleDelete}
-                            handleUpdate={handleUpdate}
-                        />
-                    ) : null}
+                        {user && user.isAdmin ? (
+                            <AdminControls
+                                handleDelete={handleDelete}
+                                handleUpdate={handleUpdate}
+                            />
+                        ) : null}
+                    </div>
                 </div>
             </div>
-        </div>
+            <ProductReviews productId={id} />
+        </>
     );
 }
 
