@@ -1,25 +1,24 @@
+import { Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
 import { useAuth } from './firebase';
 
-import { CartProvider } from './context/CartContext';
-
-import Catalog from './components/Catalog';
-import Contacts from './components/Contacts';
+import { Spinner } from './react-bootstrap';
 import HeaderNav from './components/HeaderNav';
 import Home from './components/Home';
+import Catalog from './components/Catalog';
+import Contacts from './components/Contacts';
 import Login from './components/Login/Login';
 import Register from './components/Register';
-import CreateOrUpdateForm from './components/CreateOrUpdateForm';
-import ProductDetails from './components/ProductDetails';
 import Cart from './components/Cart/Cart';
+import UserOrders from './components/UserOrders/UserOrders';
+import ProductDetails from './components/ProductDetails';
 import RequireAuth from './components/RequireAuth/RequireAuth';
 import RequireGuest from './components/RequireGuest';
-// make lazy
-import Admin from './components/Admin/Admin';
 
 import './App.css';
-import UserOrders from './components/UserOrders/UserOrders';
-import AllOrders from './components/AllOrders/AllOrders';
+
+const Admin = lazy(() => import('./components/Admin/Admin'));
 
 export default function App() {
     const user = useAuth();
@@ -62,34 +61,12 @@ export default function App() {
                             }
                         ></Route>
                         <Route
-                            path='/admin'
+                            path='/admin/*'
                             element={
                                 <RequireAuth user={user} requireAdmin={true}>
-                                    <Admin />
-                                </RequireAuth>
-                            }
-                        ></Route>
-                        <Route
-                            path='/admin/products/create'
-                            element={
-                                <RequireAuth user={user} requireAdmin={true}>
-                                    <CreateOrUpdateForm />
-                                </RequireAuth>
-                            }
-                        ></Route>
-                        <Route
-                            path='/admin/products/update/:id'
-                            element={
-                                <RequireAuth user={user} requireAdmin={true}>
-                                    <CreateOrUpdateForm />
-                                </RequireAuth>
-                            }
-                        ></Route>
-                        <Route
-                            path='/admin/orders'
-                            element={
-                                <RequireAuth user={user} requireAdmin={true}>
-                                    <AllOrders />
+                                    <Suspense fallback={<Spinner />}>
+                                        <Admin />
+                                    </Suspense>
                                 </RequireAuth>
                             }
                         ></Route>

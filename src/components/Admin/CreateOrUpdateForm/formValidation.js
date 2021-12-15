@@ -2,13 +2,7 @@ import * as yup from 'yup';
 
 // TODO: Dynamic categories and manufacturers
 
-export const categories = ['Интериорни врати', 'Входни врати'];
-export const manufacturers = [
-    'Variodor',
-    'Eurostill',
-    'New Style Doors',
-    'Star Security Door',
-];
+import { manufacturers, categories } from '../../../enums';
 
 const validation = yup.object().shape({
     category: yup

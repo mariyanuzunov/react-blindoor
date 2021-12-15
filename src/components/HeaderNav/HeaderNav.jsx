@@ -1,10 +1,9 @@
 import { useContext } from 'react';
-import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { NavLink, useNavigate } from 'react-router-dom';
-
 import { logout } from '../../firebase';
-
 import CartContext from '../../context/CartContext';
+
+import { Container, Nav, Navbar, NavDropdown } from '../../react-bootstrap';
 
 export default function HeaderNav({ user }) {
     const { products: cartItems } = useContext(CartContext);

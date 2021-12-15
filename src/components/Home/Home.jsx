@@ -1,4 +1,4 @@
-import { Carousel } from 'react-bootstrap';
+import { Carousel } from '../../react-bootstrap';
 import FeaturedProducts from './FeaturedProducts/FeaturedProducts';
 import FeaturedCategories from './FeaturedCategories/FeaturedCategories';
 

@@ -1,25 +1,32 @@
 import { useContext, useEffect, useState } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
-import CartContext from '../../context/CartContext';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { deleteDoor, getDoorById, useAuth } from '../../firebase';
-import ProductReviews from '../ProductReviews/ProductReviews';
-import styles from './ProductDetails.module.css';
+import CartContext from '../../context/CartContext';
 
-// TODO: refactor add to cart
+import { Breadcrumb, Button, ButtonGroup } from '../../react-bootstrap';
+import ProductReviews from './ProductReviews/ProductReviews';
+
+import styles from './ProductDetails.module.css';
 
 export default function ProductDetails() {
     const user = useAuth();
     const [product, setProduct] = useState({});
     const { id } = useParams();
     const navigate = useNavigate();
-    const { addProductToCart } = useContext(CartContext);
+    const { addProductToCart, removeProductFromCart, checkIfInCart } =
+        useContext(CartContext);
 
     const [isAddedToCart, setIsAddedToCart] = useState(false);
 
     useEffect(() => {
         getDoorById(id).then(setProduct).catch(console.error);
-    }, [id]);
+
+        if (checkIfInCart(id)) {
+            setIsAddedToCart(true);
+        } else {
+            setIsAddedToCart(false);
+        }
+    }, [id, checkIfInCart]);
 
     function handleUpdate() {
         navigate(`/admin/products/update/${id}`);
@@ -41,13 +48,33 @@ export default function ProductDetails() {
             price: product.price,
             imageUrl: product.imageUrl,
         });
+
         setIsAddedToCart(true);
     }
 
-    function handleRemoveFromCart() {}
+    function handleRemoveFromCart() {
+        removeProductFromCart(product.id);
+        setIsAddedToCart(false);
+    }
 
     return (
         <>
+            <Breadcrumb className='bcrumb'>
+                <Breadcrumb.Item linkAs={Link} linkProps={{ to: '/' }}>
+                    Начало
+                </Breadcrumb.Item>
+                <Breadcrumb.Item linkAs={Link} linkProps={{ to: '/catalog' }}>
+                    Каталог
+                </Breadcrumb.Item>
+                <Breadcrumb.Item linkAs={Link} linkProps={{ to: '/catalog' }}>
+                    {product.category}
+                </Breadcrumb.Item>
+                <Breadcrumb.Item linkAs={Link} linkProps={{ to: '/catalog' }}>
+                    {product.manufacturer}
+                </Breadcrumb.Item>
+                <Breadcrumb.Item active>{product.title}</Breadcrumb.Item>
+            </Breadcrumb>
+
             <div className={styles['product-container']}>
                 <div className={styles['product-img-container']}>
                     <img
@@ -86,6 +113,7 @@ export default function ProductDetails() {
                     </div>
                 </div>
             </div>
+
             <ProductReviews productId={id} />
         </>
     );

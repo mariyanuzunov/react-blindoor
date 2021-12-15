@@ -1,9 +1,13 @@
 import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import CartContext from '../../context/CartContext';
-import CartItem from './CartItems';
-import styles from './Cart.module.css';
-import CartForm from './CartForm';
 import { createOrder, useAuth } from '../../firebase';
+
+import { Alert } from '../../react-bootstrap';
+import CartItem from './CartItems';
+import CartForm from './CartForm';
+
+import styles from './Cart.module.css';
 
 export default function Cart() {
     const { products, resetCart } = useContext(CartContext);
@@ -31,6 +35,9 @@ export default function Cart() {
             </div>
         </>
     ) : (
-        <h1>Empty cart</h1>
+        <Alert variant='warning' className={styles['info-box']}>
+            Вашата количка е празна! Може да разгледате всички налични продукти
+            в нашия <Link to='/catalog'>каталог</Link>.
+        </Alert>
     );
 }

@@ -5,6 +5,7 @@ const CartContext = createContext({
     addProductToCart: product => {},
     removeProductFromCart: productId => {},
     updateProductQuantity: (productId, quantity) => {},
+    checkIfInCart: () => {},
     resetCart: () => {},
 });
 
@@ -32,6 +33,10 @@ export function CartProvider({ children }) {
         );
     }
 
+    function checkIfInCart(productId) {
+        return products.find(x => x.id === productId) ? true : false;
+    }
+
     function resetCart() {
         setProducts([]);
     }
@@ -43,6 +48,7 @@ export function CartProvider({ children }) {
                 addProductToCart,
                 removeProductFromCart,
                 updateProductQuantity,
+                checkIfInCart,
                 resetCart,
             }}
         >

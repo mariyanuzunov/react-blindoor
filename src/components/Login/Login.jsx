@@ -1,7 +1,9 @@
 import { useRef, useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
-import { login } from '../../firebase';
 import { Link, useNavigate } from 'react-router-dom';
+import { login } from '../../firebase';
+
+import { Form, Button } from '../../react-bootstrap';
+
 import styles from './Login.module.css';
 
 export default function Login() {

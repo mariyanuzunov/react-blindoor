@@ -1,5 +1,7 @@
-import { Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+
+import { Card } from '../../react-bootstrap';
+
 import styles from './ProductItem.module.css';
 
 export default function ProductItem({ item }) {
@@ -11,15 +13,18 @@ export default function ProductItem({ item }) {
 
     return (
         <Card
-            style={{ width: '14rem', cursor: 'pointer' }}
+            style={{
+                width: '222px',
+                height: '554px',
+                cursor: 'pointer',
+                marginTop: '10px',
+            }}
             onClick={handleShowDetails}
         >
             <Card.Body>
                 <Card.Img src={item.imageUrl} />
                 <p className={styles['product-title']}>{item.title}</p>
             </Card.Body>
-            {/* <Card.Subtitle> */}
-            {/* </Card.Subtitle> */}
             <Card.Footer>
                 Цена: <b>{item.price}лв.</b>
             </Card.Footer>

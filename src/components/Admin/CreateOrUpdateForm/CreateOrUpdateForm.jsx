@@ -1,8 +1,8 @@
 import { Formik } from 'formik';
-import { Col, Form, Row, Button } from 'react-bootstrap';
+import { Col, Form, Row, Button } from '../../../react-bootstrap';
 import styles from './CreateOrUpdateForm.module.css';
 import validationSchema from './formValidation';
-import { createDoor, getDoorById, updateDoor } from '../../firebase';
+import { createDoor, getDoorById, updateDoor } from '../../../firebase';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 

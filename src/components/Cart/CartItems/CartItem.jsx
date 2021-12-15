@@ -1,7 +1,8 @@
-import { Button } from 'react-bootstrap';
 import { useContext, useState } from 'react';
-import { Form } from 'react-bootstrap';
 import CartContext from '../../../context/CartContext';
+
+import { Button, Form } from '../../../react-bootstrap';
+
 import styles from './CartItem.module.css';
 
 export default function CartItem({ product }) {

@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(238, 238, 238);
+    background-color: rgb(245, 245, 245);
 }
 
 .container {
@@ -10,4 +10,21 @@ body {
 .auth-form {
     max-width: 400px;
     margin: 80px auto;
+}
+
+.spinner {
+    width: 100px;
+    height: 100px;
+    margin: 80px 50%;
+}
+
+.bcrumb {
+    padding: 10px;
+    margin-top: 30px;
+    border: 1px solid rgb(192, 192, 192);
+    border-radius: 8px;
+}
+
+.bcrumb ol {
+    margin-bottom: 0px;
 }

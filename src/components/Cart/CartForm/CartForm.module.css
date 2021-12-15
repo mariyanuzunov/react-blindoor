@@ -1,3 +1,11 @@
 .cart-form {
     width: 350px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.cart-form button {
+    margin-top: 10px;
 }

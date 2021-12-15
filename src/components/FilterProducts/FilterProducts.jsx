@@ -1,11 +1,9 @@
 import { useRef } from 'react';
-import { Col, Form, Row, Card, Button } from 'react-bootstrap';
-import {
-    categories,
-    manufacturers,
-} from '../CreateOrUpdateForm/formValidation';
 
-// TODO: Refactor
+import { manufacturers, categories } from '../../enums';
+
+import { Col, Form, Row, Card, Button } from '../../react-bootstrap';
+
 export default function FilterProducts({ filterItems }) {
     const formRef = useRef();
 

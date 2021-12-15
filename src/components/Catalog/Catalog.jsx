@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Spinner, Alert } from '../../react-bootstrap';
 import { getAllDoors } from '../../firebase';
 import CatalogSidebar from '../CatalogSidebar/CatalogSidebar';
 import ProductItemList from '../ProductItemList';
 
-// TODO: refactor
 export default function Catalog() {
     const [allDoors, setAllDoors] = useState([]);
     const [filteredDoors, setFilteredDoors] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [nothingFound, setNothingFound] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         getAllDoors().then(doors => {
+            setLoading(false);
             setAllDoors(doors);
         });
     }, []);
@@ -21,13 +24,11 @@ export default function Catalog() {
         if (criteria?.category) {
             doors = doors.filter(x => x.category === criteria?.category);
         }
-
         if (criteria?.manufacturer) {
             doors = doors.filter(
                 x => x.manufacturer === criteria?.manufacturer
             );
         }
-
         if (criteria?.minPrice) {
             doors = doors.filter(
                 x => Number(x.price) >= Number(criteria.minPrice)
@@ -38,11 +39,16 @@ export default function Catalog() {
                 x => Number(x.price) <= Number(criteria.maxPrice)
             );
         }
-
         if (criteria?.keyword) {
             doors = doors.filter(x =>
                 x.title.toLowerCase().includes(criteria.keyword.toLowerCase())
             );
+        }
+
+        if (doors.length === 0) {
+            setNothingFound(true);
+        } else {
+            setNothingFound(false);
         }
 
         setFilteredDoors(doors);
@@ -53,13 +59,27 @@ export default function Catalog() {
             <Row sm={1}>
                 <Col md={4}>
                     <CatalogSidebar filterItems={filterItems} />
+                    {nothingFound && (
+                        <Alert variant='danger'>
+                            Не бяха открити продукти, отговарящи на зададените
+                            критерии!
+                        </Alert>
+                    )}
                 </Col>
                 <Col md={8}>
-                    <ProductItemList
-                        items={
-                            filteredDoors.length > 0 ? filteredDoors : allDoors
-                        }
-                    />
+                    {loading ? (
+                        <Spinner animation='border' className='spinner' />
+                    ) : (
+                        <>
+                            <ProductItemList
+                                items={
+                                    filteredDoors.length > 0
+                                        ? filteredDoors
+                                        : allDoors
+                                }
+                            />
+                        </>
+                    )}
                 </Col>
             </Row>
         </>

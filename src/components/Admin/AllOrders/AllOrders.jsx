@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getAllOrders } from '../../firebase';
-import OrdersList from '../OrdersList/OrdersList';
+import { getAllOrders } from '../../../firebase';
+import OrdersList from '../../OrdersList/OrdersList';
 
 export default function AllOrders() {
     const [orders, setOrders] = useState([]);

@@ -24,3 +24,7 @@
 .add-review {
     margin-top: 20px;
 }
+
+.add-review button {
+    margin-top: 10px;
+}

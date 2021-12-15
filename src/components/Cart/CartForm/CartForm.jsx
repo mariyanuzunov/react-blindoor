@@ -1,5 +1,7 @@
-import { Col, Form, Row, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+
+import { Col, Form, Row, Button } from '../../../react-bootstrap';
+
 import styles from './CartForm.module.css';
 
 export default function CartForm({ submitOrder }) {

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { Editor, EditorState, RichUtils } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import './TextEditor.css';
-import { Form } from 'react-bootstrap';
+import { Form } from '../../react-bootstrap';
 
 export default function TextEditor() {
     const [editorState, setEditorState] = useState(() =>

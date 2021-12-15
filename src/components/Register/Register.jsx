@@ -1,7 +1,9 @@
 import { useRef, useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
-import { register } from '../../firebase';
 import { Link, useNavigate } from 'react-router-dom';
+import { register } from '../../firebase';
+
+import { Form, Button } from '../../react-bootstrap';
+
 import styles from './Register.module.css';
 
 const emailRegex =
