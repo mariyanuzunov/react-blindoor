@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+
+import useQuery from '../../hooks/useQuery';
+
 import { Col, Row, Spinner, Alert } from '../../react-bootstrap';
 import { getAllDoors } from '../../firebase';
 import CatalogSidebar from '../CatalogSidebar/CatalogSidebar';
@@ -10,16 +13,29 @@ export default function Catalog() {
     const [loading, setLoading] = useState(false);
     const [nothingFound, setNothingFound] = useState(false);
 
+    const query = useQuery();
+
     useEffect(() => {
         setLoading(true);
         getAllDoors().then(doors => {
+            const manufacturer = query.get('manufacturer');
+
+            if (manufacturer) {
+                filterItems({ manufacturer }, doors);
+            }
+
             setLoading(false);
             setAllDoors(doors);
         });
     }, []);
 
-    function filterItems(criteria) {
-        let doors = allDoors.slice();
+    function filterItems(criteria, initialItems) {
+        let doors;
+        if (initialItems) {
+            doors = initialItems;
+        } else {
+            doors = allDoors.slice();
+        }
 
         if (criteria?.category) {
             doors = doors.filter(x => x.category === criteria?.category);

@@ -6,7 +6,7 @@ export default function FeaturedProducts() {
         <section className='fetured-categories'>
             <article className='item1'>
                 <div className='img-container'>
-                    <Link to='#'>
+                    <Link to='/catalog?manufacturer=Variodor'>
                         <p className='category-title'>
                             Интериорни врати Variodor
                         </p>
@@ -20,11 +20,11 @@ export default function FeaturedProducts() {
             </article>
             <article className='item2'>
                 <div className='img-container'>
-                    <Link to='#'>
+                    <Link to='/catalog?manufacturer=Haska'>
                         <p className='category-title'>Входни врати Haska</p>
                         <img
                             src='https://blindoorltd.com/wp-content/uploads/2021/12/haska-Custom.jpg'
-                            alt='variodor'
+                            alt='haska'
                             className='category-img'
                         />
                     </Link>
@@ -32,13 +32,13 @@ export default function FeaturedProducts() {
             </article>
             <article className='item3'>
                 <div className='img-container'>
-                    <Link to='#'>
+                    <Link to='/catalog?manufacturer=Star Security Door'>
                         <p className='category-title'>
                             Входни врати Star Security Door
                         </p>
                         <img
                             src='https://blindoorltd.com/wp-content/uploads/2021/12/std-Custom.jpg'
-                            alt='variodor'
+                            alt='stdoors'
                             className='category-img'
                         />
                     </Link>
@@ -46,13 +46,13 @@ export default function FeaturedProducts() {
             </article>
             <article className='item4'>
                 <div className='img-container'>
-                    <Link to='#'>
+                    <Link to='/catalog?manufacturer=New Style Doors'>
                         <p className='category-title'>
                             Интериорни врати New Style Doors
                         </p>
                         <img
                             src='https://blindoorltd.com/wp-content/uploads/2021/12/eurostill-Custom.png'
-                            alt='variodor'
+                            alt='nsdoors'
                             className='category-img'
                         />
                     </Link>
