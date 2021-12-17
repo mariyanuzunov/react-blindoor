@@ -4,4 +4,5 @@ export const manufacturers = [
     'Eurostill',
     'New Style Doors',
     'Star Security Door',
+    'Haska',
 ];

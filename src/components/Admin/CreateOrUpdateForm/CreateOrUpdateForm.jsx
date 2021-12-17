@@ -119,7 +119,8 @@ export default function CreateOrUpdateForm() {
                                     </option>
                                     <option value='Star Security Door'>
                                         Star Security Door
-                                    </option>
+                                    </option>{' '}
+                                    <option value='Haska'>Haska</option>
                                 </Form.Select>
                                 <Form.Control.Feedback type='invalid'>
                                     {errors.manufacturer}

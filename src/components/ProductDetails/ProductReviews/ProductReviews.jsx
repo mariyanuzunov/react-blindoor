@@ -30,10 +30,14 @@ export default function ProductReviews(productId) {
             text: text.trim(),
         };
 
-        createReview(data).then(() => {
-            setReviews(state => [...state, data]);
-            e.target.reset();
-        });
+        createReview(data)
+            .then(review => {
+                if (review) {
+                    setReviews(state => [...state, review]);
+                    e.target.reset();
+                }
+            })
+            .catch(console.log);
     }
 
     function handleDelete(reviewId) {
@@ -83,12 +87,7 @@ export default function ProductReviews(productId) {
             <section className={styles['add-review']}>
                 <h5>Добави ново ревю</h5>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Control
-                        as='textarea'
-                        name='text'
-                        rows={6}
-                        // placeholder='Описание на продукта'
-                    />
+                    <Form.Control as='textarea' name='text' rows={6} />
                     <Button type='submit' variant='outline-success'>
                         Изпрати
                     </Button>

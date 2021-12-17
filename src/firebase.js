@@ -105,8 +105,15 @@ export async function getUserOrders(userId) {
 // Reviews Collection
 const reviewsCollectionRef = collection(db, 'reviews');
 
-export function createReview(data) {
-    return addDoc(reviewsCollectionRef, data);
+export async function createReview(data) {
+    const reviewRef = await addDoc(reviewsCollectionRef, data);
+    const snapshot = await getDoc(reviewRef);
+
+    if (snapshot.exists) {
+        return { ...snapshot.data(), id: snapshot.id };
+    } else {
+        return null;
+    }
 }
 
 export async function removeReview(id) {
