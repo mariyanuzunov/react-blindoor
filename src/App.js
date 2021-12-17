@@ -17,6 +17,7 @@ import RequireAuth from './components/RequireAuth/RequireAuth';
 import RequireGuest from './components/RequireGuest';
 
 import './App.css';
+import PageNotFound from './components/PageNotFound/PageNotFound';
 
 const Admin = lazy(() => import('./components/Admin/Admin'));
 
@@ -29,6 +30,7 @@ export default function App() {
                 <HeaderNav user={user} />
                 <div className='container'>
                     <Routes>
+                        <Route path='*' element={<PageNotFound />} />
                         <Route path='/' element={<Home />}></Route>
                         <Route path='/catalog' element={<Catalog />}></Route>
                         <Route
