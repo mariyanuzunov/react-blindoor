@@ -43,7 +43,6 @@ export default function ProductReviews(productId) {
     function handleDelete(reviewId) {
         removeReview(reviewId)
             .then(() => {
-                console.log(reviewId);
                 setReviews(state => state.filter(x => x.id !== reviewId));
             })
             .catch(console.log);

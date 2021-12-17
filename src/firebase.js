@@ -98,7 +98,7 @@ export async function getUserOrders(userId) {
         ...doc.data(),
         id: doc.id,
     }));
-    console.log(userOrders);
+
     return userOrders;
 }
 
@@ -117,7 +117,6 @@ export async function createReview(data) {
 }
 
 export async function removeReview(id) {
-    console.log(id);
     const docRef = doc(db, 'reviews', id);
     return deleteDoc(docRef);
 }
@@ -129,7 +128,7 @@ export async function getProductReviews(productId) {
         ...doc.data(),
         id: doc.id,
     }));
-    console.log(productReviews);
+
     return productReviews;
 }
 
